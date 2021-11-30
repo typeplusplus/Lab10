@@ -20,9 +20,14 @@ g++ -I/usr/include/mysql winedb.cpp -o winedb -L/usr/lib/mysql -lmysqlclient
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
+#include <string>
+#include <climits>
+#include <string.h>
 #include "dbconnect.h"
+#include "wineOperations.h"
 
 using namespace std;
+bool debug = false;
  
 
 /*
@@ -33,26 +38,29 @@ int main(int argc, char* argv[])
 {
 	if (argc > 1)
 	{
-		if(strcmp(argv[1],"-d")==0) {
+		if(strcmp(argv[1],"-d")==0) 
+		{
 			debug = true;
 			cout << "*** Debug Mode ****\n";
 		}
-		if (debug) {
+		if (debug) 
+		{
 			cout << "Argc: " << argc << " Argv[0]: " << argv[0] << endl;
 		}
 	}
 	
 	MYSQL *conn; //Connect
-	MYSQL RES *res; //Results
-	struct connection_details mysqlID;
-	mysqlID.server = (char *)"localhost";
-	mysqlID.user = (char *)"cs116";
-	mysqlID.password = (char *)"OhloneC$116";
-	mysqlID.database = (char *)"mysql";
+	MYSQL_RES *res; //Results
 	
-	conn = mysql connection setup(mysqlID);
+	struct connection_details mysqlD;
+	mysqlD.server = (char *)"localhost";
+	mysqlD.user = (char *)"cs116";
+	mysqlD.password = (char *)"OhloneC$116";
+	mysqlD.database = (char *)"mysql";
 	
-	res = mysql_perform_query(conn, (char *)"use wine");
+	conn = mysql_connection_setup(mysqlD);
+	
+	res = mysql_perform_query(conn, (char *)"USE wine");
 	
 	int selection = 0;
 	while (selection != 6)
@@ -83,7 +91,7 @@ int main(int argc, char* argv[])
 			{
 				string statement = scoreBetween(); //re-write this?
 				
-				res = mysql_perform_query(conn, (char *)statement.c str());
+				res = mysql_perform_query(conn, (char *)statement.c_str());
 				
 				printWineInfo(res);
 				if (debug)
@@ -94,8 +102,18 @@ int main(int argc, char* argv[])
 			{
 				string statement = priceBetween();
 				
-				res = mysql_perform_query(conn, (char *)statement.c str());
+				res = mysql_perform_query(conn, (char *)statement.c_str());
 				
+				printWineInfo(res);
+				if (debug)
+					cout << "SQL Statement used: " << statement << "\n\n";
+				break;
+			}
+			case 3:
+			{
+				string statement = "SELECT * FROM wineInfo ORDER BY rating DESC LIMIT 10";
+				
+				res = mysql_perform_query(conn, (char *)statement.c_str());
 				printWineInfo(res);
 				if (debug)
 					cout << "SQL Statement used: " << statement << "\n\n";
@@ -109,5 +127,5 @@ int main(int argc, char* argv[])
 		}
 		
 		return 0;
-				
+		}
 }

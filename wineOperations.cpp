@@ -26,9 +26,9 @@ void printWineHeader()
 				   << setw(3) << " " << "-----" << endl;
 }
 
-void printWineInfo(MYSQL RES *res)
+void printWineInfo(MYSQL_RES *res)
 {
-	MYSQL ROW row;
+	MYSQL_ROW row;
 	int count = 0;
 	int score = 0;
 	int redWine = 0;
@@ -45,7 +45,7 @@ void printWineInfo(MYSQL RES *res)
 	
 	while ((row = mysql_fetch_row(res)) !=NULL)
 	{
-		cout++;
+		count++;
 		score += stod(row[2]);
 		price += stod(row[3]);
 		string type = row[4];
@@ -80,7 +80,7 @@ void printWineInfo(MYSQL RES *res)
 	{
 		cout << "Number of Red Wines: " << setw(4) << left << redWine 
 			 << "    Average Red Wines Price: $" << fixed << setprecision(2) << redPrice/redWine 
-			 << "    Average Red wine score/rating: " << redScore/redWine << endl
+			 << "    Average Red wine score/rating: " << redScore/redWine << endl;
 		cout << "Number of White Wines: " << setw(4) << left << "0"
 			 << "    Average White Wines Price: $" << fixed << setprecision(2) << "0"
 			 << "    Average White Wines score/rating: " << "0" << endl;
@@ -89,7 +89,7 @@ void printWineInfo(MYSQL RES *res)
 	{
 		cout << "Number of Red Wines: " << setw(4) << left << "0" 
 			 << "    Average Red Wines Price: $" << fixed << setprecision(2) << "0" 
-			 << "    Average Red wine score/rating: " << "0" << endl
+			 << "    Average Red wine score/rating: " << "0" << endl;
 		cout << "Number of White Wines: " << setw(4) << left << whiteWine
 			 << "    Average White Wines Price: $" << fixed << setprecision(2) << whitePrice/whiteWine
 			 << "    Average White Wines score/rating: " << whiteScore/whiteWine << endl;
@@ -98,7 +98,7 @@ void printWineInfo(MYSQL RES *res)
 	{
 		cout << "Number of Red Wines: " << setw(4) << left << redWine 
 			 << "    Average Red Wines Price: $" << fixed << setprecision(2) << redPrice/redWine 
-			 << "    Average Red wine score/rating: " << redScore/redWine << endl
+			 << "    Average Red wine score/rating: " << redScore/redWine << endl;
 		cout << "Number of White Wines: " << setw(4) << left << whiteWine
 			 << "    Average White Wines Price: $" << fixed << setprecision(2) << whitePrice/whiteWine
 			 << "    Average White Wines score/rating: " << whiteScore/whiteWine << endl;
@@ -141,9 +141,17 @@ string scoreBetween()
 	
 	string scoreBetweenStatement;
 	if (x > y)
-		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating >= " + to_string(x) +" AND rating <= " + to_string(y) + " ORDER BY rating";}
+		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating BETWEEN "+ to_string(x) +" AND "+ to_string(y) + " ORDER BY rating";}
 	else
-		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating >= " + to_string(y) +" AND rating <= " + to_string(x) + " ORDER BY rating";}
+		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating BETWEEN "+ to_string(y) +" AND "+ to_string(x) + " ORDER BY rating";}
 	
-	return scoreBetweenStatment;
+	return scoreBetweenStatement;
+}
+
+string priceBetween()
+{
+	
+	string option2 = "SELECT * FROM wineInfo LIMIT 10";
+	
+	return option2;
 }
