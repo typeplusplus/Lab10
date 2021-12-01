@@ -140,7 +140,7 @@ string scoreBetween()
 	}
 	
 	string scoreBetweenStatement;
-	if (x > y)
+	if (x < y)
 		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating BETWEEN "+ to_string(x) +" AND "+ to_string(y) + " ORDER BY rating";}
 	else
 		{scoreBetweenStatement = "SELECT * FROM wineInfo WHERE rating BETWEEN "+ to_string(y) +" AND "+ to_string(x) + " ORDER BY rating";}
@@ -151,7 +151,7 @@ string scoreBetween()
 string priceBetween()
 {
 	
-	string option2 = "SELECT * FROM wineInfo LIMIT 10";
+	string option2 = "SELECT * FROM wineInfo ORDER BY rating LIMIT 10";
 	
 	return option2;
 }
